@@ -52,3 +52,37 @@ const characters = [
         path: 'img/Rapunzel.png'
     },
 ]
+
+const game = document.querySelector('.game');
+
+function createCards () {
+
+    const repeatCharacters = characters.concat(characters)
+                                       .sort(() => 0.5 - Math.random());
+
+    repeatCharacters.forEach(elem => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        const front = document.createElement('div');
+        front.classList.add('front');
+
+        const back = document.createElement('div');
+        back.classList.add('back');
+        back.style.backgroundImage = `url(${elem.path})`
+
+        card.appendChild(front);
+        card.appendChild(back);
+        game.appendChild(card);
+    })
+}
+
+createCards();
+
+const cards = document.querySelectorAll('.card');
+
+cards.forEach(elem => {
+    elem.addEventListener('click', () => {
+        elem.classList.toggle('selected');
+    })
+})

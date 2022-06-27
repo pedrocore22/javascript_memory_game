@@ -48,3 +48,8 @@ body {
 .card.selected {
     transform: rotateY(180deg);
 }
+
+.card.succesfull {
+    transform: rotateY(180deg);
+    pointer-events: none;
+}

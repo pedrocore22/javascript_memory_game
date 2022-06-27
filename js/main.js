@@ -54,6 +54,9 @@ const characters = [
 ]
 
 const game = document.querySelector('.game');
+let firstSelectedElement = null;
+let secondSelectedElement = null;
+let counter = 0;
 
 function createCards () {
 
@@ -63,6 +66,7 @@ function createCards () {
     repeatCharacters.forEach(elem => {
         const card = document.createElement('div');
         card.classList.add('card');
+        card.dataset.name = elem.name;
 
         const front = document.createElement('div');
         front.classList.add('front');
@@ -82,7 +86,35 @@ createCards();
 const cards = document.querySelectorAll('.card');
 
 cards.forEach(elem => {
-    elem.addEventListener('click', () => {
+    elem.addEventListener('click', (event) => {
+        if(counter === 1 && elem === firstSelectedElement) {
+            return;
+        }
         elem.classList.toggle('selected');
+        if (firstSelectedElement === null) {
+            firstSelectedElement = elem;
+            counter = 1;
+            setTimeout(() => {
+                elem.classList.toggle('selected');
+            }, 1000)
+        } else {
+            secondSelectedElement = elem;
+            // counter = 2;
+            if(firstSelectedElement.dataset.name === 
+               secondSelectedElement.dataset.name) {
+                firstSelectedElement.classList.add('succesfull');
+                secondSelectedElement.classList.add('succesfull');
+            } else {
+                console.log('son distintos');
+            }
+            setTimeout(() => {
+                elem.classList.toggle('selected');
+            }, 1000)
+            firstSelectedElement = null;
+            secondSelectedElement = null;
+            counter = 0;
+        }
+        console.log(firstSelectedElement);
+        console.log(secondSelectedElement);
     })
 })

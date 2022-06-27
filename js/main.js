@@ -54,6 +54,9 @@ const characters = [
 ]
 
 const game = document.querySelector('.game');
+const bounceSound = document.getElementById('bounce');
+const clicSound = document.getElementById('clic');
+
 let firstSelectedElement = null;
 let secondSelectedElement = null;
 let counter = 0;
@@ -87,11 +90,14 @@ const cards = document.querySelectorAll('.card');
 
 cards.forEach(elem => {
     elem.addEventListener('click', (event) => {
+        bounceSound.currentTime = 0;
+        clicSound.currentTime = 0;
         if(counter === 1 && elem === firstSelectedElement) {
             return;
         }
         elem.classList.toggle('selected');
         if (firstSelectedElement === null) {
+            bounceSound.play();
             firstSelectedElement = elem;
             counter = 1;
             setTimeout(() => {
@@ -102,10 +108,11 @@ cards.forEach(elem => {
             // counter = 2;
             if(firstSelectedElement.dataset.name === 
                secondSelectedElement.dataset.name) {
+                clicSound.play();
                 firstSelectedElement.classList.add('succesfull');
                 secondSelectedElement.classList.add('succesfull');
             } else {
-                console.log('son distintos');
+                bounceSound.play();
             }
             setTimeout(() => {
                 elem.classList.toggle('selected');

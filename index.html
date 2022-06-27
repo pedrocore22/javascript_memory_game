@@ -10,10 +10,19 @@
 <body>
     <div class="start">
         <h1>Memory Game</h1>
-        <button>Start</button>
+        <button onclick="startGame()">Start</button>
     </div>
     <div class="game">
+        <div class="menu">
+            <div>
+                <p>Acertados <span id="success-characters"></span></p>
+                <p>Pendientes <span id="pending-characters"></span></p>
+            </div>
+            <p id="clock"></p>
+        </div>
+        <div class="board">
 
+        </div>
     </div>
     <audio id="bounce" src="audio/bounce.mp3"></audio>
     <audio id="clic" src="audio/clic.mp3"></audio>

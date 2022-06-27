@@ -53,15 +53,34 @@ const characters = [
     },
 ]
 
+const start = document.querySelector('.start');
 const game = document.querySelector('.game');
+const board = document.querySelector('.board');
+const successCharacters = document.getElementById('success-characters');
+const pendingCharacters = document.getElementById('pending-characters');
+const clock = document.getElementById('clock');
+
 const bounceSound = document.getElementById('bounce');
 const clicSound = document.getElementById('clic');
+const songSound = document.getElementById('song');
 
 let firstSelectedElement = null;
 let secondSelectedElement = null;
 let counter = 0;
+let gameTimeSeconds = 120;
 
-function createCards () {
+let successCharactersNumber = 0;
+successCharacters.innerHTML = successCharactersNumber;
+pendingCharacters.innerHTML = characters.length - successCharactersNumber;
+
+function startGame() {
+
+    start.style.display = 'none';
+    game.style.display = 'flex';
+    setTimeout(() => game.classList.add('show'), 100);
+
+    songSound.volume = 0.5;
+    songSound.play();
 
     const repeatCharacters = characters.concat(characters)
                                        .sort(() => 0.5 - Math.random());
@@ -80,48 +99,72 @@ function createCards () {
 
         card.appendChild(front);
         card.appendChild(back);
-        game.appendChild(card);
+        board.appendChild(card);
     })
+    playGame();
+    startTimer();
 }
 
-createCards();
+function startTimer() {
+    const s = parseInt(gameTimeSeconds % 60);
+    const m = parseInt(gameTimeSeconds / 60);
+    const ss = ('0' + s).slice(-2);
+    const mm = ('0' + m).slice(-2);
 
-const cards = document.querySelectorAll('.card');
+    clock.innerHTML = mm + ':' + ss;
 
-cards.forEach(elem => {
-    elem.addEventListener('click', (event) => {
-        bounceSound.currentTime = 0;
-        clicSound.currentTime = 0;
-        if(counter === 1 && elem === firstSelectedElement) {
-            return;
-        }
-        elem.classList.toggle('selected');
-        if (firstSelectedElement === null) {
-            bounceSound.play();
-            firstSelectedElement = elem;
-            counter = 1;
-            setTimeout(() => {
-                elem.classList.toggle('selected');
-            }, 1000)
-        } else {
-            secondSelectedElement = elem;
-            // counter = 2;
-            if(firstSelectedElement.dataset.name === 
-               secondSelectedElement.dataset.name) {
-                clicSound.play();
-                firstSelectedElement.classList.add('succesfull');
-                secondSelectedElement.classList.add('succesfull');
-            } else {
-                bounceSound.play();
+    if (gameTimeSeconds > 0) {
+        let timer = setTimeout(() => {
+            startTimer();
+        }, 1000)
+    }
+
+    gameTimeSeconds--;
+}
+
+function playGame() {
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(elem => {
+        elem.addEventListener('click', (event) => {
+            bounceSound.currentTime = 0;
+            clicSound.currentTime = 0;
+            if(counter === 1 && elem === firstSelectedElement) {
+                return;
             }
-            setTimeout(() => {
-                elem.classList.toggle('selected');
-            }, 1000)
-            firstSelectedElement = null;
-            secondSelectedElement = null;
-            counter = 0;
-        }
-        console.log(firstSelectedElement);
-        console.log(secondSelectedElement);
+            elem.classList.toggle('selected');
+            if (firstSelectedElement === null) {
+                bounceSound.play();
+                firstSelectedElement = elem;
+                counter = 1;
+                setTimeout(() => {
+                    elem.classList.toggle('selected');
+                }, 1000)
+            } else {
+                secondSelectedElement = elem;
+                // counter = 2;
+                if(firstSelectedElement.dataset.name === 
+                   secondSelectedElement.dataset.name) {
+                    clicSound.play();
+                    firstSelectedElement.classList.add('succesfull');
+                    secondSelectedElement.classList.add('succesfull');
+                    successCharactersNumber++;
+                    successCharacters.innerHTML = successCharactersNumber;
+                    pendingCharacters.innerHTML = characters.length - successCharactersNumber;
+                } else {
+                    bounceSound.play();
+                }
+                setTimeout(() => {
+                    elem.classList.toggle('selected');
+                }, 1000)
+                firstSelectedElement = null;
+                secondSelectedElement = null;
+                counter = 0;
+            }
+            console.log(firstSelectedElement);
+            console.log(secondSelectedElement);
+        })
     })
-})
+    
+}
+

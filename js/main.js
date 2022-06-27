@@ -56,6 +56,7 @@ const characters = [
 const start = document.querySelector('.start');
 const game = document.querySelector('.game');
 const board = document.querySelector('.board');
+const gameOver = document.querySelector('.game-over');
 const successCharacters = document.getElementById('success-characters');
 const pendingCharacters = document.getElementById('pending-characters');
 const clock = document.getElementById('clock');
@@ -63,11 +64,12 @@ const clock = document.getElementById('clock');
 const bounceSound = document.getElementById('bounce');
 const clicSound = document.getElementById('clic');
 const songSound = document.getElementById('song');
+const failSound = document.getElementById('fail');
 
 let firstSelectedElement = null;
 let secondSelectedElement = null;
 let counter = 0;
-let gameTimeSeconds = 120;
+let gameTimeSeconds = 0;
 
 let successCharactersNumber = 0;
 successCharacters.innerHTML = successCharactersNumber;
@@ -75,15 +77,29 @@ pendingCharacters.innerHTML = characters.length - successCharactersNumber;
 
 function startGame() {
 
+    firstSelectedElement = null;
+    secondSelectedElement = null;
+    counter = 0;
+    gameTimeSeconds = 10;
+    successCharactersNumber = 0;
+    successCharacters.innerHTML = successCharactersNumber;
+    pendingCharacters.innerHTML = characters.length - successCharactersNumber;
     start.style.display = 'none';
     game.style.display = 'flex';
+    gameOver.style.display = 'none';
     setTimeout(() => game.classList.add('show'), 100);
 
+    songSound.currentTime = 0;
     songSound.volume = 0.5;
     songSound.play();
 
     const repeatCharacters = characters.concat(characters)
                                        .sort(() => 0.5 - Math.random());
+
+    const oldCards = document.querySelectorAll('.card');
+    if(oldCards.length > 0) {
+        board.innerHTML = '';
+    }
 
     repeatCharacters.forEach(elem => {
         const card = document.createElement('div');
@@ -117,6 +133,11 @@ function startTimer() {
         let timer = setTimeout(() => {
             startTimer();
         }, 1000)
+    } else {
+        game.style.display = 'none';
+        gameOver.style.display = 'flex';
+        songSound.pause();
+        failSound.play();
     }
 
     gameTimeSeconds--;

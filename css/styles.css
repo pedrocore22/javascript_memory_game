@@ -22,12 +22,13 @@ body {
     align-items: center;
 }
 
-.start h1 {
+h1 {
     font-size: 6rem;
+    text-align: center;
     color: yellow;
 }
 
-.start button {
+button {
     font-size: 2rem;
     padding: 1rem;
     border: 8px solid yellow;
@@ -89,6 +90,16 @@ body {
     justify-content: center;
     align-items: center;
     overflow-y: scroll;
+}
+
+.game-over {
+    width: 100%;
+    max-width: 1260px;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .card {

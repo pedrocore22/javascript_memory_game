@@ -92,7 +92,8 @@ button {
     overflow-y: scroll;
 }
 
-.game-over {
+.game-over,
+.winner {
     width: 100%;
     max-width: 1260px;
     height: 100vh;

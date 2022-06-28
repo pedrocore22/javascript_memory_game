@@ -7,56 +7,57 @@ const characters = [
         name: 'Campanilla',
         path: 'img/Campanilla.png'
     },
-    {
-        name: 'Cenicienta',
-        path: 'img/Cenicienta.png'
-    },
-    {
-        name: 'Elsa',
-        path: 'img/Elsa.png'
-    },
-    {
-        name: 'Flynn',
-        path: 'img/Flynn.png'
-    },
-    {
-        name: 'Genio',
-        path: 'img/Genio.png'
-    },
-    {
-        name: 'HadaMadrina',
-        path: 'img/HadaMadrina.png'
-    },
-    {
-        name: 'Kaa',
-        path: 'img/Kaa.png'
-    },
-    {
-        name: 'Mushu',
-        path: 'img/Mushu.png'
-    },
-    {
-        name: 'Pascal',
-        path: 'img/Pascal.png'
-    },
-    {
-        name: 'Pepito',
-        path: 'img/Pepito.png'
-    },
-    {
-        name: 'Primavera',
-        path: 'img/Primavera.png'
-    },
-    {
-        name: 'Rapunzel',
-        path: 'img/Rapunzel.png'
-    },
+    // {
+    //     name: 'Cenicienta',
+    //     path: 'img/Cenicienta.png'
+    // },
+    // {
+    //     name: 'Elsa',
+    //     path: 'img/Elsa.png'
+    // },
+    // {
+    //     name: 'Flynn',
+    //     path: 'img/Flynn.png'
+    // },
+    // {
+    //     name: 'Genio',
+    //     path: 'img/Genio.png'
+    // },
+    // {
+    //     name: 'HadaMadrina',
+    //     path: 'img/HadaMadrina.png'
+    // },
+    // {
+    //     name: 'Kaa',
+    //     path: 'img/Kaa.png'
+    // },
+    // {
+    //     name: 'Mushu',
+    //     path: 'img/Mushu.png'
+    // },
+    // {
+    //     name: 'Pascal',
+    //     path: 'img/Pascal.png'
+    // },
+    // {
+    //     name: 'Pepito',
+    //     path: 'img/Pepito.png'
+    // },
+    // {
+    //     name: 'Primavera',
+    //     path: 'img/Primavera.png'
+    // },
+    // {
+    //     name: 'Rapunzel',
+    //     path: 'img/Rapunzel.png'
+    // },
 ]
 
 const start = document.querySelector('.start');
 const game = document.querySelector('.game');
 const board = document.querySelector('.board');
 const gameOver = document.querySelector('.game-over');
+const winner = document.querySelector('.winner');
 const successCharacters = document.getElementById('success-characters');
 const pendingCharacters = document.getElementById('pending-characters');
 const clock = document.getElementById('clock');
@@ -65,6 +66,7 @@ const bounceSound = document.getElementById('bounce');
 const clicSound = document.getElementById('clic');
 const songSound = document.getElementById('song');
 const failSound = document.getElementById('fail');
+const winnerSound = document.getElementById('winner');
 
 let firstSelectedElement = null;
 let secondSelectedElement = null;
@@ -72,6 +74,7 @@ let counter = 0;
 let gameTimeSeconds = 0;
 
 let successCharactersNumber = 0;
+let isWinner = false;
 successCharacters.innerHTML = successCharactersNumber;
 pendingCharacters.innerHTML = characters.length - successCharactersNumber;
 
@@ -82,6 +85,7 @@ function startGame() {
     counter = 0;
     gameTimeSeconds = 10;
     successCharactersNumber = 0;
+    isWinner = false;
     successCharacters.innerHTML = successCharactersNumber;
     pendingCharacters.innerHTML = characters.length - successCharactersNumber;
     start.style.display = 'none';
@@ -133,6 +137,11 @@ function startTimer() {
         let timer = setTimeout(() => {
             startTimer();
         }, 1000)
+    } else if (isWinner) {
+        game.style.display = 'none';
+        winner.style.display = 'flex';
+        songSound.pause();
+        winnerSound.play();
     } else {
         game.style.display = 'none';
         gameOver.style.display = 'flex';
@@ -182,10 +191,16 @@ function playGame() {
                 secondSelectedElement = null;
                 counter = 0;
             }
-            console.log(firstSelectedElement);
-            console.log(secondSelectedElement);
+            checkWinner();
         })
     })
     
+}
+
+function checkWinner() {
+    if (successCharactersNumber === characters.length) {
+        isWinner = true;
+        gameTimeSeconds = 0;
+    } 
 }
 

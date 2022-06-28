@@ -7,55 +7,56 @@ const characters = [
         name: 'Campanilla',
         path: 'img/Campanilla.png'
     },
-    // {
-    //     name: 'Cenicienta',
-    //     path: 'img/Cenicienta.png'
-    // },
-    // {
-    //     name: 'Elsa',
-    //     path: 'img/Elsa.png'
-    // },
-    // {
-    //     name: 'Flynn',
-    //     path: 'img/Flynn.png'
-    // },
-    // {
-    //     name: 'Genio',
-    //     path: 'img/Genio.png'
-    // },
-    // {
-    //     name: 'HadaMadrina',
-    //     path: 'img/HadaMadrina.png'
-    // },
-    // {
-    //     name: 'Kaa',
-    //     path: 'img/Kaa.png'
-    // },
-    // {
-    //     name: 'Mushu',
-    //     path: 'img/Mushu.png'
-    // },
-    // {
-    //     name: 'Pascal',
-    //     path: 'img/Pascal.png'
-    // },
-    // {
-    //     name: 'Pepito',
-    //     path: 'img/Pepito.png'
-    // },
-    // {
-    //     name: 'Primavera',
-    //     path: 'img/Primavera.png'
-    // },
-    // {
-    //     name: 'Rapunzel',
-    //     path: 'img/Rapunzel.png'
-    // },
+    {
+        name: 'Cenicienta',
+        path: 'img/Cenicienta.png'
+    },
+    {
+        name: 'Elsa',
+        path: 'img/Elsa.png'
+    },
+    {
+        name: 'Flynn',
+        path: 'img/Flynn.png'
+    },
+    {
+        name: 'Genio',
+        path: 'img/Genio.png'
+    },
+    {
+        name: 'HadaMadrina',
+        path: 'img/HadaMadrina.png'
+    },
+    {
+        name: 'Kaa',
+        path: 'img/Kaa.png'
+    },
+    {
+        name: 'Mushu',
+        path: 'img/Mushu.png'
+    },
+    {
+        name: 'Pascal',
+        path: 'img/Pascal.png'
+    },
+    {
+        name: 'Pepito',
+        path: 'img/Pepito.png'
+    },
+    {
+        name: 'Primavera',
+        path: 'img/Primavera.png'
+    },
+    {
+        name: 'Rapunzel',
+        path: 'img/Rapunzel.png'
+    },
 ]
 
 const start = document.querySelector('.start');
 const game = document.querySelector('.game');
 const board = document.querySelector('.board');
+const charactersCompletedDiv = document.querySelector('.characters-completed');
 const gameOver = document.querySelector('.game-over');
 const winner = document.querySelector('.winner');
 const successCharacters = document.getElementById('success-characters');
@@ -74,6 +75,7 @@ let counter = 0;
 let gameTimeSeconds = 0;
 
 let successCharactersNumber = 0;
+let charactersCompleted = [];
 let isWinner = false;
 successCharacters.innerHTML = successCharactersNumber;
 pendingCharacters.innerHTML = characters.length - successCharactersNumber;
@@ -83,8 +85,10 @@ function startGame() {
     firstSelectedElement = null;
     secondSelectedElement = null;
     counter = 0;
-    gameTimeSeconds = 10;
+    gameTimeSeconds = 120;
     successCharactersNumber = 0;
+    charactersCompleted = [];
+    charactersCompletedDiv.innerHTML = '';
     isWinner = false;
     successCharacters.innerHTML = successCharactersNumber;
     pendingCharacters.innerHTML = characters.length - successCharactersNumber;
@@ -179,6 +183,8 @@ function playGame() {
                     firstSelectedElement.classList.add('succesfull');
                     secondSelectedElement.classList.add('succesfull');
                     successCharactersNumber++;
+                    addCharacterCompleted(secondSelectedElement.dataset.name);
+                    console.log(charactersCompleted);
                     successCharacters.innerHTML = successCharactersNumber;
                     pendingCharacters.innerHTML = characters.length - successCharactersNumber;
                 } else {
@@ -196,6 +202,26 @@ function playGame() {
     })
     
 }
+
+function addCharacterCompleted(characterName) {
+    characters.forEach(elem => {
+        if(elem.name === characterName) {
+            charactersCompleted.push(elem);
+        }
+    })
+    charactersCompletedDiv.innerHTML = '';
+    charactersCompleted.forEach(elem => {
+        const characterDiv = document.createElement('div');
+        const characterParagraph = document.createElement('p');
+        const characterPic = document.createElement('img');
+        characterParagraph.innerHTML = elem.name;
+        characterPic.src = elem.path;
+        characterDiv.appendChild(characterPic);
+        characterDiv.appendChild(characterParagraph);
+        charactersCompletedDiv.appendChild(characterDiv);
+    })
+}
+
 
 function checkWinner() {
     if (successCharactersNumber === characters.length) {

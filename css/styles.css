@@ -74,6 +74,27 @@ button {
     color: yellow;
 }
 
+.game .menu .characters-completed {
+    height: calc(100vh - 14rem);
+    overflow-y: auto;
+}
+
+.game .menu .characters-completed div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.3rem;
+}
+
+.game .menu .characters-completed img {
+    height: 3rem;
+    margin-right: 0.5rem;
+}
+
+.game .menu .characters-completed p {
+    font-size: 1rem;
+}
+
 .game .menu p#clock {
     font-size: 3.5rem;
 }
